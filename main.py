@@ -8,12 +8,12 @@ import getpass
 
 password = getpass.getpass()
 
-driver = webdriver.Chrome()
+driver = webdriver.Firefox()
 driver.get("https://intranet.unob.cz")
 
 elem = driver.find_element(By.ID, "userNameInput")
 elem.clear()
-elem.send_keys("email@unob.cz")
+elem.send_keys("minhquang.bui@unob.cz")
 elem.send_keys(Keys.RETURN)
 
 elem = driver.find_element(By.ID, "passwordInput")
@@ -40,4 +40,4 @@ elem = WebDriverWait(driver, 10).until(
 elem.click()
 
 assert "No results found." not in driver.page_source
-driver.close()
+# driver.close()
