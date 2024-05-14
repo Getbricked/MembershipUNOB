@@ -5,9 +5,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import json
 import time
-import get_group
 
-# get_group()
+# import get_group
+
 
 # Setup Chrome options
 options = Options()
@@ -49,6 +49,7 @@ groups = []
 
 for item in urls_data:
     group_name = item["group_name"]
+    group_id = item["group_id"]
     url = item["url"]
     print(f"Opening URL for group {group_name}: {url}\n")
     driver.get(url)
@@ -80,7 +81,7 @@ for item in urls_data:
         ] = email  # Add email to the corresponding student dictionary
         time.sleep(0.3)
 
-    groups.append({"group_name": group_name, "students": students})
+    groups.append({"group_name": group_name, "id": group_id, "students": students})
 
     # Print the extracted usernames and IDs
     # for group in groups:
