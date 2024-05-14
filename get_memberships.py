@@ -6,6 +6,9 @@ from selenium.webdriver.common.by import By
 import json
 import time
 
+# import get_group
+
+
 # Setup Chrome options
 options = Options()
 options.add_experimental_option("detach", True)
@@ -36,34 +39,41 @@ with open("credentials.json", "r") as file:
 driver.find_element(By.NAME, "Username").send_keys(username)
 driver.find_element(By.NAME, "Password").send_keys(password)
 driver.find_element(By.NAME, "button").click()
-time.sleep(1)
+time.sleep(0.2)
 
 ## Load group page
-with open("urls.json", "r", encoding="utf-8") as file:
+with open("groups_data.json", "r", encoding="utf-8") as file:
     urls_data = json.load(file)
 
-groups = []
+students = []
+
 
 for item in urls_data:
     group_name = item["group_name"]
+    group_id = item["group_id"]
     url = item["url"]
     print(f"Opening URL for group {group_name}: {url}\n")
     driver.get(url)
-    time.sleep(1)
+    time.sleep(0.3)
     # Find all student links
     links = driver.find_elements(By.CSS_SELECTOR, "#StudijniSkupinaStudents a")
 
     # Extract usernames and IDs
-    students = []
     student_links = []
 
     for link in links:
         student_link = link.get_attribute("href")
         student_id = link.get_attribute("href").split("/")[-1]
         student_name = link.text.strip()
-
         student_links.append(student_link)
-        students.append({"id": student_id, "username": student_name})
+        students.append(
+            {
+                "id": student_id,
+                "username": student_name,
+                "group": group_name,
+                "group_id": group_id,
+            }
+        )
 
     for i, link in enumerate(student_links):
         driver.get(link)
@@ -76,17 +86,20 @@ for item in urls_data:
         students[i][
             "email"
         ] = email  # Add email to the corresponding student dictionary
-        time.sleep(0.5)
-
-    groups.append({"group_name": group_name, "students": students})
+        time.sleep(0.3)
 
     # Print the extracted usernames and IDs
-    for group in groups:
-        print(f"Group: {group['group_name']}")
-        for student in group["students"]:
-            print(
-                f"ID: {student['id']}, Username: {student['username']}, Email: {student['email']}"
-            )
-    # Close the WebDriver
+    # for group in groups:
+    #     print(f"Group: {group['group_name']}")
+    #     for student in group["students"]:
+    #         print(
+    #             f"ID: {student['id']}, Username: {student['username']}, Email: {student['email']}"
+    #         )
+    print(students)
+
+groups = {"memberships": students}
+
+with open("data.json", "w", encoding="utf-8") as outfile:
+    json.dump(groups, outfile, ensure_ascii=False, indent=4)
 
 driver.quit()
