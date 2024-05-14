@@ -39,7 +39,7 @@ driver.find_element(By.NAME, "button").click()
 time.sleep(1)
 
 ## Load group page
-with open("groups_data.json", "r", encoding="utf-8") as file:
+with open("urls.json", "r", encoding="utf-8") as file:
     urls_data = json.load(file)
 
 groups = []
