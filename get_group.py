@@ -28,7 +28,7 @@ for link in links:
     )
 
 # Save data to a JSON file
-with open("urls.json", "w", encoding="utf-8") as outfile:
+with open("groups_data.json", "w", encoding="utf-8") as outfile:
     json.dump(data, outfile, ensure_ascii=False, indent=4)
 
 print("Data has been saved to urls.json file.")
