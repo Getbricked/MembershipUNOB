@@ -6,10 +6,15 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import StaleElementReferenceException, TimeoutException, NoSuchElementException
+from selenium.common.exceptions import (
+    StaleElementReferenceException,
+    TimeoutException,
+    NoSuchElementException,
+)
 import json
 import time
 from get_group import get_group
+
 
 def get_membership():
     # Setup Chrome options
@@ -17,7 +22,9 @@ def get_membership():
     options.add_experimental_option("detach", True)
 
     # Start a new instance of Chrome WebDriver
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()), options=options
+    )
     wait = WebDriverWait(driver, 10)
     print("WebDriver has been started.")
 
@@ -50,22 +57,29 @@ def get_membership():
     with open("groups_data.json", "r", encoding="utf-8") as file:
         urls_data = json.load(file)
 
+    print(len(urls_data), " groups has been founded.\n")
+
     students = []
 
     for item in urls_data:
         group_name = item["group_name"]
         group_id = item["group_id"]
         url = item["url"]
-        print(f"Opening URL for group {group_name}: {url}\n")
         driver.get(url)
         time.sleep(0.3)
 
         # Find all student links
         try:
-            links = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#StudijniSkupinaStudents a")))
+            links = wait.until(
+                EC.presence_of_all_elements_located(
+                    (By.CSS_SELECTOR, "#StudijniSkupinaStudents a")
+                )
+            )
         except TimeoutException:
             print(f"Timeout while waiting for student links in group {group_name}.")
             continue
+
+        print(f" - Opening URL for group {group_name}: {url}\n")
 
         # Extract usernames and IDs
         for link in links:
@@ -73,34 +87,80 @@ def get_membership():
                 student_link = link.get_attribute("href")
                 student_id = student_link.split("/")[-1]
                 student_name = link.text.strip()
-                students.append({
-                    "id": student_id,
-                    "name": student_name,
-                    "group": group_name,
-                    "group_id": group_id,
-                    "link": student_link
-                })
+                students.append(
+                    {
+                        "id": student_id,
+                        "name": student_name,
+                        "group": group_name,
+                        "group_id": group_id,
+                        "link": student_link,
+                    }
+                )
             except StaleElementReferenceException as e:
-                print(f"StaleElementReferenceException occurred for student {link.text.strip() if link else 'unknown'}: {e}")
+                print(
+                    f"StaleElementReferenceException occurred for student {link.text.strip() if link else 'unknown'}: {e}"
+                )
 
+    print(f"Total {len(students)} students has been founded.\n")
+
+    # Student's index
+    index = 1
+
+    # Extract additional data for each student
     for student in students:
         try:
             driver.get(student["link"])
             time.sleep(0.3)
 
-            email_element = wait.until(EC.presence_of_element_located((By.XPATH, "//div[strong[text()='E-mail:']]/following-sibling::div")))
+            email_element = wait.until(
+                EC.presence_of_element_located(
+                    (By.XPATH, "//div[strong[text()='E-mail:']]/following-sibling::div")
+                )
+            )
             student["email"] = email_element.text if email_element else "N/A"
 
-            rocnik_element = wait.until(EC.presence_of_element_located((By.XPATH, "//div[strong[text()='Ročník:']]/following-sibling::div")))
+            rocnik_element = wait.until(
+                EC.presence_of_element_located(
+                    (By.XPATH, "//div[strong[text()='Ročník:']]/following-sibling::div")
+                )
+            )
             student["rocnik"] = rocnik_element.text if rocnik_element else "N/A"
 
-            fakulta_element = wait.until(EC.presence_of_element_located((By.XPATH, "//div[strong[text()='Fakulta:']]/following-sibling::div/a")))
+            fakulta_element = wait.until(
+                EC.presence_of_element_located(
+                    (
+                        By.XPATH,
+                        "//div[strong[text()='Fakulta:']]/following-sibling::div/a",
+                    )
+                )
+            )
             student["fakulta"] = fakulta_element.text if fakulta_element else "N/A"
 
-            datova_schranka_element = wait.until(EC.presence_of_element_located((By.XPATH, "//div[strong[text()='Datová schránka:']]/following-sibling::div")))
-            student["datova_schranka"] = datova_schranka_element.text if datova_schranka_element else "N/A"
-        except (TimeoutException, NoSuchElementException, StaleElementReferenceException) as e:
+            datova_schranka_element = wait.until(
+                EC.presence_of_element_located(
+                    (
+                        By.XPATH,
+                        "//div[strong[text()='Datová schránka:']]/following-sibling::div",
+                    )
+                )
+            )
+            student["datova_schranka"] = (
+                datova_schranka_element.text if datova_schranka_element else "N/A"
+            )
+
+            print(f"{index}. {student['name']} - {student['group']} has been loaded.")
+            index += 1
+
+        except (
+            TimeoutException,
+            NoSuchElementException,
+            StaleElementReferenceException,
+        ) as e:
             print(f"Error occurred for student {student['name']}: {e}")
+
+    print("All students have been loaded.\n")
+    time.sleep(0.5)
+    print("Removing unnecessary data...\n")
 
     for student in students:
         if "link" in student:
@@ -108,10 +168,16 @@ def get_membership():
 
     # Save the extracted data to a JSON file
     groups = {"memberships": students}
+    time.sleep(0.5)
+
+    print("Saving data to data.json file...\n")
+
     with open("data.json", "w", encoding="utf-8") as outfile:
         json.dump(groups, outfile, ensure_ascii=False, indent=4)
 
+    time.sleep(0.5)
+
+    print("Data has been saved to data.json file.\n")
+
     driver.quit()
     print("WebDriver has been closed.")
-
-
