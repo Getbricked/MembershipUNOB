@@ -1,8 +1,10 @@
 # main.py
-from get_memberships import get_membership
+from utils.extract_data import extract_data
+
 
 def main():
-    get_membership()
+    extract_data()
+
 
 if __name__ == "__main__":
     main()

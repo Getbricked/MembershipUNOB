@@ -36,7 +36,11 @@ Pokud máte u entit k dispozici atributy navíc, navrhněte rozšíření GQL en
 
 Before running the program please create these following files!
 
-1. "credentials.json" with this format:
+1. "systemdata.json" - This file will contain students information. You can keep it blank.
+
+## In "untils" folder:
+
+2. "a_credentials.json" with this format:
 
 ```json
 {
@@ -45,9 +49,7 @@ Before running the program please create these following files!
 }
 ```
 
-2. "groups_data.json" - This file will contain student groups information. You can keep it blank.
-
-3. "systemdata.json" - This file will contain students information. You can keep it blank.
+3. "b_groups_data.json" - This file will contain student groups information. You can keep it blank.
 
 ### Requirements
 
