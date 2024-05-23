@@ -51,7 +51,7 @@ def get_membership():
     driver.find_element(By.NAME, "Username").send_keys(username)
     driver.find_element(By.NAME, "Password").send_keys(password)
     driver.find_element(By.NAME, "button").click()
-    time.sleep(0.2)
+    time.sleep(0.05)
 
     # Load group page
     with open("groups_data.json", "r", encoding="utf-8") as file:
@@ -66,7 +66,7 @@ def get_membership():
         group_id = item["group_id"]
         url = item["url"]
         driver.get(url)
-        time.sleep(0.3)
+        # time.sleep(0.05)
 
         # Find all student links
         try:
@@ -110,7 +110,7 @@ def get_membership():
     for student in students:
         try:
             driver.get(student["link"])
-            time.sleep(0.3)
+            # time.sleep(0.05)
 
             # Email
             email_element = wait.until(
@@ -179,7 +179,7 @@ def get_membership():
 
     print("Saving data to data.json file...\n")
 
-    with open("data.json", "w", encoding="utf-8") as outfile:
+    with open("systemdata.json", "w", encoding="utf-8") as outfile:
         json.dump(groups, outfile, ensure_ascii=False, indent=4)
 
     time.sleep(0.5)

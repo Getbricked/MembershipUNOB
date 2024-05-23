@@ -34,7 +34,7 @@ Pokud máte u entit k dispozici atributy navíc, navrhněte rozšíření GQL en
 
 ### JSON requirements
 
-Before running the code please create some of these following files!
+Before running the program please create these following files!
 
 1. "credentials.json" with this format:
 
