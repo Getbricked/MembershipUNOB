@@ -85,11 +85,10 @@ def get_membership():
         for link in links:
             try:
                 student_link = link.get_attribute("href")
-                student_id = str(uuid.uuid4())
                 student_name = link.text.strip()
+
                 students.append(
                     {
-                        "id": student_id,
                         "name": student_name,
                         "group": group_name,
                         "group_id": group_id,
@@ -106,11 +105,42 @@ def get_membership():
     # Student's index
     index = 1
 
+    with open("systemdata.json", "r", encoding="utf-8") as file:
+        old_students = json.load(file)["memberships"]
+
     # Extract additional data for each student
     for student in students:
+        check = False
+        for old_student in old_students:
+
+            if (
+                student["name"] == old_student["name"]
+                and student["group"] == old_student["group"]
+            ):
+
+                student["email"] = old_student["email"]
+                student["rocnik"] = old_student["rocnik"]
+                student["fakulta"] = old_student["fakulta"]
+                student["datova_schranka"] = old_student["datova_schranka"]
+                student["id"] = old_student["id"]
+
+                check = True
+                index += 1
+
+                print(
+                    f"######{index}. {student['name']} - {student['group']} already exists, skipping."
+                )
+
+                break
+
+        if check:
+            continue
+
         try:
             driver.get(student["link"])
             # time.sleep(0.05)
+
+            student["id"] = str(uuid.uuid4())
 
             # Email
             email_element = wait.until(
@@ -173,8 +203,15 @@ def get_membership():
         if "link" in student:
             del student["link"]
 
+    # Merge the old and new students data
+    merged_students = students + old_students
+
+    # Remove duplicates
+    filtered_list = {item["id"]: item for item in merged_students}.values()
+    filtered_list = list(filtered_list)
+
     # Save the extracted data to a JSON file
-    groups = {"memberships": students}
+    groups = {"memberships": filtered_list}
     time.sleep(0.5)
 
     print("Saving data to data.json file...\n")
