@@ -14,6 +14,7 @@ from selenium.common.exceptions import (
 import json
 import time
 from get_group import get_group
+import uuid
 
 
 def get_membership():
@@ -28,14 +29,13 @@ def get_membership():
     wait = WebDriverWait(driver, 10)
     print("WebDriver has been started.")
 
-    # Extract group data
+    # Extract groups data
     html_file_path = "list_groups.html"
     output_json_path = "groups_data.json"
     get_group(html_file_path, output_json_path)
 
     # Open the URL and Login
-    with open("url.json", "r") as file:
-        url = json.load(file)["url"]
+    url = "https://apl.unob.cz/MojeAP"
 
     driver.get(url)
     driver.refresh()
@@ -47,7 +47,7 @@ def get_membership():
         username = credentials["username"]
         password = credentials["password"]
 
-    # Fill in the login form and submit
+    # Login
     driver.find_element(By.NAME, "Username").send_keys(username)
     driver.find_element(By.NAME, "Password").send_keys(password)
     driver.find_element(By.NAME, "button").click()
@@ -85,7 +85,7 @@ def get_membership():
         for link in links:
             try:
                 student_link = link.get_attribute("href")
-                student_id = student_link.split("/")[-1]
+                student_id = str(uuid.uuid4())
                 student_name = link.text.strip()
                 students.append(
                     {
@@ -112,6 +112,7 @@ def get_membership():
             driver.get(student["link"])
             time.sleep(0.3)
 
+            # Email
             email_element = wait.until(
                 EC.presence_of_element_located(
                     (By.XPATH, "//div[strong[text()='E-mail:']]/following-sibling::div")
@@ -119,6 +120,7 @@ def get_membership():
             )
             student["email"] = email_element.text if email_element else "N/A"
 
+            # Year of study
             rocnik_element = wait.until(
                 EC.presence_of_element_located(
                     (By.XPATH, "//div[strong[text()='Ročník:']]/following-sibling::div")
@@ -126,6 +128,7 @@ def get_membership():
             )
             student["rocnik"] = rocnik_element.text if rocnik_element else "N/A"
 
+            # Falcuty
             fakulta_element = wait.until(
                 EC.presence_of_element_located(
                     (
@@ -136,6 +139,7 @@ def get_membership():
             )
             student["fakulta"] = fakulta_element.text if fakulta_element else "N/A"
 
+            # Datova schranka?
             datova_schranka_element = wait.until(
                 EC.presence_of_element_located(
                     (
@@ -148,9 +152,11 @@ def get_membership():
                 datova_schranka_element.text if datova_schranka_element else "N/A"
             )
 
+            # Display on terminal
             print(f"{index}. {student['name']} - {student['group']} has been loaded.")
             index += 1
 
+        # Handle errors
         except (
             TimeoutException,
             NoSuchElementException,
@@ -162,6 +168,7 @@ def get_membership():
     time.sleep(0.5)
     print("Removing unnecessary data...\n")
 
+    # Remove the link attribute
     for student in students:
         if "link" in student:
             del student["link"]

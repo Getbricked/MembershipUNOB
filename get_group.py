@@ -1,6 +1,8 @@
 # group_extractor.py
 from bs4 import BeautifulSoup
 import json
+import uuid
+
 
 def get_group(html_file_path, output_json_path):
     # Open the HTML file
@@ -19,7 +21,7 @@ def get_group(html_file_path, output_json_path):
     # Extract URL, group name, and group id from each <a> tag and store in data list
     for link in links:
         url = link["href"]
-        group_id = url.split("/")[-1]
+        group_id = str(uuid.uuid4())
         group_name = link.text.strip(";")
         data.append(
             {
