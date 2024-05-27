@@ -76,12 +76,16 @@ def extract_data():
         if "link" in student:
             del student["link"]
 
-    # Merge the old and new students data
-    merged_students = students + old_students
+    # Merge old and new students to filter out duplicates and update additional data
+    student_dict = {}
 
-    # Remove duplicates
-    filtered_list = {item["id"]: item for item in merged_students}.values()
-    filtered_list = list(filtered_list)
+    for student in old_students:
+        student_dict[student["id"]] = student
+
+    for student in students:
+        student_dict[student["id"]] = student
+
+    filtered_list = list(student_dict.values())
 
     # Save the extracted data to a JSON file
     groups = {"memberships": filtered_list}
