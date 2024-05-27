@@ -36,9 +36,9 @@ def get_group(html_file_path, output_json_path):
         group_id = old_groups_lookup.get((group_name, url), str(uuid.uuid4()))
         data.append(
             {
+                "group_id": group_id,
                 "group_name": group_name,
                 "url": url,
-                "group_id": group_id,
             }
         )
 
