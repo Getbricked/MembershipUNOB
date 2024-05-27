@@ -14,6 +14,7 @@ from selenium.common.exceptions import (
 import json
 import time
 import uuid
+import os
 from utils.b_get_group import get_group
 from utils.a_login import login
 from utils.c_create_student_list import create_student_list
@@ -54,8 +55,11 @@ def extract_data():
     print("-----------------------------------------------------------")
     print("Data comparison...\n")
 
-    with open("systemdata.json", "r", encoding="utf-8") as file:
-        old_students = json.load(file)["memberships"]
+    if os.path.getsize("systemdata.json") > 0:
+        with open("systemdata.json", "r", encoding="utf-8") as file:
+            old_students = json.load(file)["memberships"]
+    else:
+        old_students = []
 
     # Student's index
     index = 1
