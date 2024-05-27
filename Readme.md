@@ -32,7 +32,7 @@ U entit naplňte všechny atributy, pokud ve zdroji některé atributy nejsou, d
 
 Pokud máte u entit k dispozici atributy navíc, navrhněte rozšíření GQL endpointu.<br />
 
-### JSON requirements
+# JSON requirements
 
 Before running the program please create these following files!
 
