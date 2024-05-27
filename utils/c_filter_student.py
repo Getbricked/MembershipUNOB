@@ -16,8 +16,8 @@ import uuid
 
 
 # Filter students
-def filter_students(students, old_students, driver, wait, index):
-
+def filter_students(students, old_students, driver, wait):
+    index = 1
     for student in students:
         check = False
         for old_student in old_students:
@@ -26,12 +26,11 @@ def filter_students(students, old_students, driver, wait, index):
                 student["name"] == old_student["name"]
                 and student["group"] == old_student["group"]
             ):
-
+                student["id"] = old_student["id"]
                 student["email"] = old_student["email"]
                 student["rocnik"] = old_student["rocnik"]
                 student["fakulta"] = old_student["fakulta"]
                 student["datova_schranka"] = old_student["datova_schranka"]
-                student["id"] = old_student["id"]
 
                 print(
                     f"######{index}. {student['name']} - {student['group']} already exists, skipping."
@@ -102,4 +101,20 @@ def filter_students(students, old_students, driver, wait, index):
         ) as e:
             print(f"Error occurred for student {student['name']}: {e}")
 
-    return students
+    # Remove the link attribute
+    for student in students:
+        if "link" in student:
+            del student["link"]
+
+    # Merge old and new students to filter out duplicates and update additional data
+    student_dict = {}
+
+    for student in old_students:
+        student_dict[student["id"]] = student
+
+    for student in students:
+        student_dict[student["id"]] = student
+
+    filtered_list = list(student_dict.values())
+
+    return filtered_list

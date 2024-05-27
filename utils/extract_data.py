@@ -61,33 +61,13 @@ def extract_data():
     else:
         old_students = []
 
-    # Student's index
-    index = 1
-
-    # Extract additional data for each student
-    students = filter_students(students, old_students, driver, wait, index)
-
     print("All students have been loaded.\n")
     time.sleep(0.5)
     print("Removing unnecessary data...\n")
 
-    # Remove the link attribute
-    for student in students:
-        if "link" in student:
-            del student["link"]
-
-    # Merge old and new students to filter out duplicates and update additional data
-    student_dict = {}
-
-    for student in old_students:
-        student_dict[student["id"]] = student
-
-    for student in students:
-        student_dict[student["id"]] = student
-
-    filtered_list = list(student_dict.values())
-
     # Save the extracted data to a JSON file
+    filtered_list = filter_students(students, old_students, driver, wait)
+
     groups = {"memberships": filtered_list}
     time.sleep(0.5)
 
