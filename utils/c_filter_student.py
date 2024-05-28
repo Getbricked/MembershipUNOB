@@ -113,7 +113,8 @@ def filter_students(students, old_students, driver, wait):
         student_dict[student["id"]] = student
 
     for student in students:
-        student_dict[student["id"]] = student
+        # student_dict[student["id"]] = student
+        student_dict[student["id"]] = {**student_dict.get(student["id"], {}), **student}
 
     filtered_list = list(student_dict.values())
 
