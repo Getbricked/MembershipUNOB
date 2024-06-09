@@ -21,12 +21,12 @@ def get_group(html_file_path, output_json_path):
 
     if os.path.getsize(output_json_path) > 0:
         with open(output_json_path, "r", encoding="utf-8") as old_data_file:
-            old_groups = json.load(old_data_file)
+            old_groups = json.load(old_data_file)["groups"]
     else:
         old_groups = []
 
     old_groups_lookup = {
-        (group["group_name"], group["url"]): group["group_id"] for group in old_groups
+        (group["name"], group["url"]): group["id"] for group in old_groups
     }
 
     # Extract URL, group name, and group id from each <a> tag and store in data list
@@ -36,11 +36,14 @@ def get_group(html_file_path, output_json_path):
         group_id = old_groups_lookup.get((group_name, url), str(uuid.uuid4()))
         data.append(
             {
-                "group_id": group_id,
-                "group_name": group_name,
+                "id": group_id,
+                "name": group_name,
                 "url": url,
+                "valid": True,
             }
         )
+
+    data = {"groups": data}
 
     # Save data to a JSON file
     with open(output_json_path, "w", encoding="utf-8") as outfile:

@@ -16,8 +16,8 @@ def create_student_list(urls_data, driver, wait):
     students = []
 
     for item in urls_data:
-        group_name = item["group_name"]
-        group_id = item["group_id"]
+        group_name = item["name"]
+        group_id = item["id"]
         url = item["url"]
         driver.get(url)
         # time.sleep(0.05)
@@ -47,6 +47,7 @@ def create_student_list(urls_data, driver, wait):
                         "group": group_name,
                         "group_id": group_id,
                         "link": student_link,
+                        "valid": True,
                     }
                 )
             except StaleElementReferenceException as e:

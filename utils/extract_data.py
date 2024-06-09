@@ -1,84 +1,98 @@
-# get_membership.py
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import (
-    StaleElementReferenceException,
-    TimeoutException,
-    NoSuchElementException,
-)
 import json
 import time
 import uuid
 import os
-from utils.b_get_group import get_group
-from utils.a_login import login
-from utils.c_create_student_list import create_student_list
-from utils.c_filter_student import filter_students
 
 
 def extract_data():
-    # Setup Chrome options
-    options = Options()
-    options.add_experimental_option("detach", True)
 
-    # Start a new instance of Chrome WebDriver
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()), options=options
-    )
-    wait = WebDriverWait(driver, 10)
-    print("WebDriver has been started.")
-
-    # Extract groups data
-    html_file_path = "utils/b_list_groups.html"
-    output_json_path = "utils/b_groups_data.json"
-    get_group(html_file_path, output_json_path)
-
-    # Login to the website
-    login(driver)
-
-    # Load group page
-    with open(output_json_path, "r", encoding="utf-8") as file:
-        urls_data = json.load(file)
-
-    print(len(urls_data), " groups have been founded.\n")
-
-    # Get student data from the URL
-    students = create_student_list(urls_data, driver, wait)
-
-    print(f"Total {len(students)} students have been founded.\n")
-
-    print("-----------------------------------------------------------")
-    print("Data comparison...\n")
-
-    if os.path.getsize("systemdata.json") > 0:
-        with open("systemdata.json", "r", encoding="utf-8") as file:
-            old_students = json.load(file)["memberships"]
+    # Get student data
+    if os.path.getsize("utils/c_students_data.json") > 0:
+        with open("utils/c_students_data.json", "r", encoding="utf-8") as data_file:
+            students = json.load(data_file)["users"]
     else:
-        old_students = []
+        students = []
 
-    print("All students have been loaded.\n")
-    time.sleep(0.5)
-    print("Removing unnecessary data...\n")
+    # Get group data
+    if os.path.getsize("utils/b_groups_data.json") > 0:
+        with open("utils/b_groups_data.json", "r", encoding="utf-8") as data_file:
+            groups = json.load(data_file)["groups"]
+    else:
+        groups = []
+
+    memberships = []
+    users = []
+
+    # Get old memberships data
+    if os.path.getsize("systemdata.json") > 0:
+        with open("systemdata.json", "r", encoding="utf-8") as data_file:
+            old_memberships = json.load(data_file)["memberships"]
+    else:
+        old_memberships = []
+
+    # Create a dictionary of old memberships base on group_id and user_id
+    old_memberships_dict = {
+        (m["user_id"], m["group_id"]): m["id"] for m in old_memberships
+    }
+
+    # Reformat the student data and create new memberships
+    for student in students:
+        # Split the name into parts
+        name_parts = student["name"].split()
+
+        # Assume the first part is the surname and the rest is the first name
+        surname = name_parts[0]
+        name = " ".join(name_parts[1:])
+
+        membership_id = old_memberships_dict.get(
+            (student["id"], student["group_id"]), str(uuid.uuid4())
+        )
+
+        memberships.append(
+            {
+                "id": membership_id,
+                "user_id": student["id"],
+                "group_id": student["group_id"],
+                "valid": True,
+            }
+        )
+
+        users.append(
+            {
+                "id": student["id"],
+                "name": name,
+                "surname": surname,
+                "group_id": student["group_id"],
+                "email": student["email"],
+                "rocnik": student["rocnik"],
+                "fakulta": student["fakulta"],
+                "datova_schranka": student["datova_schranka"],
+                "valid": True,
+            }
+        )
+
+    # Merge the old memberships with the new ones
+    membership_dict = {}
+
+    for m in old_memberships:
+        membership_dict[m["id"]] = m
+
+    for m in memberships:
+        membership_dict[m["id"]] = {**membership_dict.get(m["id"], {}), **m}
+
+    filtered_memberships = list(membership_dict.values())
+
+    # Remove the URL parameter from the groups
+    for group in groups:
+        if "url" in group:
+            del group["url"]
 
     # Save the extracted data to a JSON file
-    filtered_list = filter_students(students, old_students, driver, wait)
-
-    groups = {"memberships": filtered_list}
-    time.sleep(0.5)
-
-    print("Saving data to data.json file...\n")
+    extracted_data = {
+        "groups": groups,
+        "users": users,
+        "memberships": filtered_memberships,
+    }
 
     with open("systemdata.json", "w", encoding="utf-8") as outfile:
-        json.dump(groups, outfile, ensure_ascii=False, indent=4)
-
-    time.sleep(0.5)
-
-    print("Data has been saved to data.json file.\n")
-
-    driver.quit()
-    print("WebDriver has been closed.")
+        json.dump(extracted_data, outfile, ensure_ascii=False, indent=4)
