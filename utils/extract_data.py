@@ -79,8 +79,22 @@ def extract_data():
             }
         )
 
+    # Create externalidtypes
+    externalidtypes = []
+
+    # Default externalidtype for MojeAP-Student from gqlUG
+    externalidtypes.append(
+        {
+            "id": "d5bfe043-f82e-4d24-baa2-524a4f443ed0",
+            "name": "MojeAP-Student",
+            "name_en": "UCO",
+            "urlformat": "https://apl.unob.cz/MojeAP/Student/%s",
+            "category_id": "0ee3a92d-971f-499a-956f-ca6edb8d6094",
+        }
+    )
+
     # Create externalids
-    externalids = create_externalids(students)
+    externalids = create_externalids(students, memberships, externalidtypes)
 
     # Merge the old memberships with the new ones
     membership_dict = {}
@@ -100,6 +114,7 @@ def extract_data():
 
     # Save the extracted data to a JSON file
     extracted_data = {
+        "externalidtypes": externalidtypes,
         "externalids": externalids,
         "groups": groups,
         "users": users,
