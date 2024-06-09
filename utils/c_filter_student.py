@@ -101,11 +101,6 @@ def filter_students(students, old_students, driver, wait):
         ) as e:
             print(f"Error occurred for student {student['name']}: {e}")
 
-    # Remove the link attribute
-    for student in students:
-        if "link" in student:
-            del student["link"]
-
     # Merge old and new students to filter out duplicates and update additional data
     student_dict = {}
 

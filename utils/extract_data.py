@@ -3,6 +3,8 @@ import time
 import uuid
 import os
 
+from utils.d_create_externalids import create_externalids
+
 
 def extract_data():
 
@@ -23,10 +25,16 @@ def extract_data():
     memberships = []
     users = []
 
+    # create_externalids(students)
+
     # Get old memberships data
     if os.path.getsize("systemdata.json") > 0:
         with open("systemdata.json", "r", encoding="utf-8") as data_file:
-            old_memberships = json.load(data_file)["memberships"]
+            data = json.load(data_file)
+            if "memberships" in data:
+                old_memberships = data["memberships"]
+            else:
+                old_memberships = []
     else:
         old_memberships = []
 
@@ -71,6 +79,9 @@ def extract_data():
             }
         )
 
+    # Create externalids
+    externalids = create_externalids(students)
+
     # Merge the old memberships with the new ones
     membership_dict = {}
 
@@ -89,6 +100,7 @@ def extract_data():
 
     # Save the extracted data to a JSON file
     extracted_data = {
+        "externalids": externalids,
         "groups": groups,
         "users": users,
         "memberships": filtered_memberships,

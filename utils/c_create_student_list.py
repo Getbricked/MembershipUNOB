@@ -46,8 +46,8 @@ def create_student_list(urls_data, driver, wait):
                         "name": student_name,
                         "group": group_name,
                         "group_id": group_id,
-                        "link": student_link,
                         "valid": True,
+                        "link": student_link,
                     }
                 )
             except StaleElementReferenceException as e:

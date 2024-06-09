@@ -8,9 +8,9 @@ def webscraping():
     html_file_path = "utils/b_list_groups.html"
     output_json_path = "utils/b_groups_data.json"
 
-    get_group(html_file_path, output_json_path)
+    # get_group(html_file_path, output_json_path)
 
-    get_student()
+    # get_student()
 
     extract_data()
 
