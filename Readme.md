@@ -49,7 +49,9 @@ Before running the program please create these following files!
 }
 ```
 
-3. "b_groups_data.json" - This file will contain student groups information. You can keep it blank.
+3. "b_groups_data.json" - This file will contain groups information. You can keep it blank.
+
+4. "c_students_data.json" - This file will contain students information. You can keep it blank.
 
 ### Requirements
 
