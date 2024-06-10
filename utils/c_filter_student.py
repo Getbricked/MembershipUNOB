@@ -32,9 +32,9 @@ def filter_students(students, old_students, driver, wait):
                 student["fakulta"] = old_student["fakulta"]
                 student["datova_schranka"] = old_student["datova_schranka"]
 
-                print(
-                    f"######{index}. {student['name']} - {student['group']} already exists, skipping."
-                )
+                # print(
+                #     f"######{index}. {student['name']} - {student['group']} already exists, skipping."
+                # )
 
                 check = True
                 index += 1

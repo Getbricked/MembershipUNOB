@@ -78,6 +78,8 @@ def extract_data():
                 "valid": True,
             }
         )
+    list_length = len(memberships)
+    print(f"Độ dài của danh sách memberships là: {list_length}")
 
     # Create externalidtypes
     externalidtypes = []

@@ -40,6 +40,7 @@ def get_group(html_file_path, output_json_path):
                 "name": group_name,
                 "url": url,
                 "valid": True,
+                "grouptype_id":"cd49e157-610c-11ed-9312-001a7dda7110"
             }
         )
 
