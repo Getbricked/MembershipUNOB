@@ -70,16 +70,16 @@ def extract_data():
                 "id": student["id"],
                 "name": name,
                 "surname": surname,
-                "group_id": student["group_id"],
+                # "group_id": student["group_id"],
                 "email": student["email"],
-                "rocnik": student["rocnik"],
-                "fakulta": student["fakulta"],
-                "datova_schranka": student["datova_schranka"],
+                # "rocnik": student["rocnik"],
+                # "fakulta": student["fakulta"],
+                # "datova_schranka": student["datova_schranka"],
                 "valid": True,
             }
         )
     list_length = len(memberships)
-    print(f"Độ dài của danh sách memberships là: {list_length}")
+    print(f"Number of memberships: {list_length}")
 
     # Create externalidtypes
     externalidtypes = []

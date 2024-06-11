@@ -1,0 +1,12 @@
+mutation ($id: UUID!, $user_id: UUID!, $group_id: UUID!, $valid: Boolean) {
+  result: membershipInsert(
+    membership: { id: $id, userId: $user_id, groupId: $group_id, valid: $valid }
+  ) {
+    id
+    msg
+    result: membership {
+      id
+      lastchange
+    }
+  }
+}

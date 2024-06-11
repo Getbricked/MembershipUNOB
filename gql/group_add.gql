@@ -1,0 +1,12 @@
+mutation ($id: UUID!, $name: String!, $grouptype_id: UUID!) {
+  result: groupInsert(
+    group: { id: $id, name: $name, grouptypeId: $grouptype_id }
+  ) {
+    id
+    msg
+    result: group {
+      id
+      lastchange
+    }
+  }
+}
