@@ -12,9 +12,9 @@ def read_config():
     config_values = {
         "get_data": config.getboolean("Webscraping", "get_data"),
         "extract_data": config.getboolean("Webscraping", "extract_data"),
-        "import_user": config.getboolean("DataImport", "import_user"),
-        "import_group": config.getboolean("DataImport", "import_group"),
-        "import_membership": config.getboolean("DataImport", "import_membership"),
+        "user": config.getboolean("DataImport", "user"),
+        "group": config.getboolean("DataImport", "group"),
+        "membership": config.getboolean("DataImport", "membership"),
     }
 
     return config_values
@@ -25,9 +25,9 @@ def default_config():
 
     config["Webscraping"] = {"get_data": "True", "extract_data": "True"}
     config["DataImport"] = {
-        "import_user": "True",
-        "import_group": "True",
-        "import_membership": "True",
+        "user": "True",
+        "group": "True",
+        "membership": "True",
     }
 
     # Write the configuration to a file
@@ -39,9 +39,9 @@ def validate_config():
     default_values = {
         "Webscraping": {"get_data": True, "extract_data": True},
         "DataImport": {
-            "import_user": True,
-            "import_group": True,
-            "import_membership": True,
+            "user": True,
+            "group": True,
+            "membership": True,
         },
     }
 

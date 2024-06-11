@@ -33,7 +33,6 @@ def get_student():
     print("WebDriver has been started.")
 
     # Extract groups data
-    html_file_path = "utils/b_list_groups.html"
     output_json_path = "utils/b_groups_data.json"
 
     # Login to the website

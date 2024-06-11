@@ -99,17 +99,17 @@ def data_import(config):
     group_gql = "gql/group_add.gql"
     membership_gql = "gql/membership_add.gql"
 
-    if config["import_user"]:
+    if config["user"]:
         loop.run_until_complete(execute_mutation(data["users"], db_writer, user_gql))
     else:
         print("Skipping user import...")
 
-    if config["import_group"]:
+    if config["group"]:
         loop.run_until_complete(execute_mutation(data["groups"], db_writer, group_gql))
     else:
         print("Skipping group import...")
 
-    if config["import_membership"]:
+    if config["membership"]:
         loop.run_until_complete(
             execute_mutation(data["memberships"], db_writer, membership_gql)
         )
