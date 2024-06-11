@@ -79,7 +79,7 @@ async def execute_mutation(data, db_writer, graphql_dir):
         tasks.append(limited_query(mutation, variables))
 
     results = await asyncio.gather(*tasks, return_exceptions=True)
-    with open("results.txt", "w", encoding="utf-8") as result_file:
+    with open("results.txt", "a", encoding="utf-8") as result_file:
         for result in results:
             if isinstance(result, Exception):
                 result_file.write(f"Error: {result}\n")

@@ -1,18 +1,6 @@
-mutation (
-  $id: UUID!
-  $name: String!
-  $surname: String!
-  $email: String!
-  $valid: Boolean
-) {
+mutation ($id: UUID!, $name: String!, $surname: String!, $email: String!) {
   result: userInsert(
-    user: {
-      id: $id
-      name: $name
-      surname: $surname
-      email: $email
-      valid: $valid
-    }
+    user: { id: $id, name: $name, surname: $surname, email: $email }
   ) {
     id
     msg

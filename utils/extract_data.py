@@ -75,7 +75,7 @@ def extract_data():
                 # "rocnik": student["rocnik"],
                 # "fakulta": student["fakulta"],
                 # "datova_schranka": student["datova_schranka"],
-                "valid": True,
+                # "valid": True,
             }
         )
     list_length = len(memberships)
