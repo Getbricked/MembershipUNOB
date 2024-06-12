@@ -16,6 +16,10 @@ def webscraping():
     extract_data()
 
 
-if __name__ == "__main__":
+def main():
     webscraping()
     data_import()
+
+
+if __name__ == "__main__":
+    main()
