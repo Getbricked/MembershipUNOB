@@ -12,9 +12,9 @@ def read_config():
     config_values = {
         "get_data": config.getboolean("Webscraping", "get_data"),
         "extract_data": config.getboolean("Webscraping", "extract_data"),
-        "user": config.getboolean("DataImport", "user"),
-        "group": config.getboolean("DataImport", "group"),
-        "membership": config.getboolean("DataImport", "membership"),
+        "users": config.getboolean("DataImport", "users"),
+        "groups": config.getboolean("DataImport", "groups"),
+        "memberships": config.getboolean("DataImport", "memberships"),
     }
 
     return config_values
@@ -25,9 +25,9 @@ def default_config():
 
     config["Webscraping"] = {"get_data": "True", "extract_data": "True"}
     config["DataImport"] = {
-        "user": "True",
-        "group": "True",
-        "membership": "True",
+        "users": "True",
+        "groups": "True",
+        "memberships": "True",
     }
 
     # Write the configuration to a file
@@ -39,9 +39,9 @@ def validate_config():
     default_values = {
         "Webscraping": {"get_data": True, "extract_data": True},
         "DataImport": {
-            "user": True,
-            "group": True,
-            "membership": True,
+            "users": True,
+            "groups": True,
+            "memberships": True,
         },
     }
 
@@ -78,3 +78,32 @@ def validate_config():
 config_web = validate_config()["Webscraping"]
 
 config_data = validate_config()["DataImport"]
+
+
+def config_check_web(config):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            if config:
+                print("Executing " + func.__name__ + "...")
+                return func(*args, **kwargs)
+            else:
+                print("Skipping " + func.__name__ + "...")
+                return None
+
+        return wrapper
+
+    return decorator
+
+
+def config_check_import(key):
+    def decorator(func):
+        async def wrapper(config, data, db_writer, gql_func):
+            if config.get(key, False):
+                print(f"Executing {key} import...")
+                await func(data[key], db_writer, gql_func)
+            else:
+                print(f"Skipping {key} import...")
+
+        return wrapper
+
+    return decorator

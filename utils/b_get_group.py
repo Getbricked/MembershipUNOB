@@ -3,8 +3,10 @@ from bs4 import BeautifulSoup
 import json
 import uuid
 import os
+from utils._config import config_check_web, config_web
 
 
+@config_check_web(config_web["get_data"])
 def get_group(html_file_path, output_json_path):
     # Open the HTML file
     with open(html_file_path, "r", encoding="utf-8") as file:
@@ -18,12 +20,9 @@ def get_group(html_file_path, output_json_path):
 
     # Initialize a list to store data
     data = []
+    from utils.extract_data import open_file
 
-    if os.path.getsize(output_json_path) > 0:
-        with open(output_json_path, "r", encoding="utf-8") as old_data_file:
-            old_groups = json.load(old_data_file)["groups"]
-    else:
-        old_groups = []
+    old_groups = open_file(output_json_path, "groups")
 
     old_groups_lookup = {
         (group["name"], group["url"]): group["id"] for group in old_groups
@@ -40,7 +39,7 @@ def get_group(html_file_path, output_json_path):
                 "name": group_name,
                 "url": url,
                 "valid": True,
-                "grouptype_id":"cd49e157-610c-11ed-9312-001a7dda7110"
+                "grouptype_id": "cd49e157-610c-11ed-9312-001a7dda7110",
             }
         )
 

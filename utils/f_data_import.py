@@ -1,6 +1,9 @@
 import json
 import asyncio
 import aiohttp
+from utils._config import config_check_import, config_data
+
+config = config_data
 
 
 class DBWriter:
@@ -89,7 +92,22 @@ async def execute_mutation(data, db_writer, graphql_dir):
                 print(f"Success: {result}")
 
 
-def data_import(config):
+@config_check_import("users")
+async def import_user(data, db_writer, gql_func):
+    await execute_mutation(data, db_writer, gql_func)
+
+
+@config_check_import("groups")
+async def import_group(data, db_writer, gql_func):
+    await execute_mutation(data, db_writer, gql_func)
+
+
+@config_check_import("memberships")
+async def import_membership(data, db_writer, gql_func):
+    await execute_mutation(data, db_writer, gql_func)
+
+
+def data_import():
     with open("systemdata.json", "r", encoding="utf-8") as file:
         data = json.load(file)
 
@@ -99,19 +117,9 @@ def data_import(config):
     group_gql = "gql/group_add.gql"
     membership_gql = "gql/membership_add.gql"
 
-    if config["user"]:
-        loop.run_until_complete(execute_mutation(data["users"], db_writer, user_gql))
-    else:
-        print("Skipping user import...")
+    async def import_data():
+        await import_user(config, data, db_writer, user_gql)
+        await import_group(config, data, db_writer, group_gql)
+        await import_membership(config, data, db_writer, membership_gql)
 
-    if config["group"]:
-        loop.run_until_complete(execute_mutation(data["groups"], db_writer, group_gql))
-    else:
-        print("Skipping group import...")
-
-    if config["membership"]:
-        loop.run_until_complete(
-            execute_mutation(data["memberships"], db_writer, membership_gql)
-        )
-    else:
-        print("Skipping membership import...")
+    loop.run_until_complete(import_data())

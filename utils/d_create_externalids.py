@@ -6,16 +6,9 @@ import os
 
 def create_externalids(students, memberships, externalidtypes):
     externalids = []
+    from utils.extract_data import open_file
 
-    if os.path.getsize("systemdata.json") > 0:
-        with open("systemdata.json", "r", encoding="utf-8") as data_file:
-            data = json.load(data_file)
-            if "externalids" not in data:
-                externalids_data = []
-            else:
-                externalids_data = data["externalids"]
-    else:
-        externalids_data = []
+    externalids_data = open_file("systemdata.json", "externalids")
 
     externalids_dict = {
         (item["inner_id"], item["outer_id"]): item["id"] for item in externalids_data

@@ -16,6 +16,7 @@ import time
 import uuid
 import os
 from utils.a_login import login
+from utils._config import config_check_web, config_web
 
 
 # Getting student data from the URL
@@ -166,6 +167,7 @@ def filter_students(students, old_students, driver, wait):
     return filtered_list
 
 
+@config_check_web(config_web["get_data"])
 def get_student():
     # Setup Chrome options
     options = Options()
@@ -185,8 +187,9 @@ def get_student():
     login(driver)
 
     # Load group page
-    with open(output_json_path, "r", encoding="utf-8") as file:
-        urls_data = json.load(file)["groups"]
+    from utils.extract_data import open_file
+
+    urls_data = open_file(output_json_path, "groups")
 
     print(len(urls_data), " groups have been founded.\n")
 

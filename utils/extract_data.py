@@ -4,44 +4,39 @@ import uuid
 import os
 
 from utils.d_create_externalids import create_externalids
+from utils._config import config_check_web, config_web
 
 
+def open_file(path, data_name):
+    if os.path.getsize(path) > 0:
+        with open(path, "r", encoding="utf-8") as data_file:
+            data = json.load(data_file)
+            if data_name in data:
+                out_data = data[data_name]
+            else:
+                out_data = []
+    else:
+        out_data = []
+
+    return out_data
+
+
+@config_check_web(config_web["extract_data"])
 def extract_data():
 
-    # Get student data
-    if os.path.getsize("utils/c_students_data.json") > 0:
-        with open("utils/c_students_data.json", "r", encoding="utf-8") as data_file:
-            students = json.load(data_file)["users"]
-    else:
-        students = []
-
-    # Get group data
-    if os.path.getsize("utils/b_groups_data.json") > 0:
-        with open("utils/b_groups_data.json", "r", encoding="utf-8") as data_file:
-            groups = json.load(data_file)["groups"]
-    else:
-        groups = []
-
-    memberships = []
-    users = []
-
-    # create_externalids(students)
-
-    # Get old memberships data
-    if os.path.getsize("systemdata.json") > 0:
-        with open("systemdata.json", "r", encoding="utf-8") as data_file:
-            data = json.load(data_file)
-            if "memberships" in data:
-                old_memberships = data["memberships"]
-            else:
-                old_memberships = []
-    else:
-        old_memberships = []
+    # Load the data from the JSON files
+    students = open_file("utils/c_students_data.json", "users")
+    groups = open_file("utils/b_groups_data.json", "groups")
 
     # Create a dictionary of old memberships base on group_id and user_id
+    old_memberships = open_file("systemdata.json", "memberships")
     old_memberships_dict = {
         (m["user_id"], m["group_id"]): m["id"] for m in old_memberships
     }
+
+    # Define the new data structures for memberships and users
+    memberships = []
+    users = []
 
     # Reformat the student data and create new memberships
     for student in students:
@@ -70,8 +65,8 @@ def extract_data():
                 "id": student["id"],
                 "name": name,
                 "surname": surname,
-                # "group_id": student["group_id"],
                 "email": student["email"],
+                # "group_id": student["group_id"],
                 # "rocnik": student["rocnik"],
                 # "fakulta": student["fakulta"],
                 # "datova_schranka": student["datova_schranka"],
