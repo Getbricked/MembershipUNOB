@@ -52,3 +52,20 @@ pip install -r requirements.txt
 ```
 
 Or you can create .venv with "requirements.txt".
+
+### Initialization process
+
+We already published our project as a Pypi package so in file 'requirement.txt' you just need to add "membershipUNOB", it will automatically install all the libraries and dependencies.<br />
+Move on to the next step, please create main.py file and in this file please import "membershipUNOB" just like code below:<br />
+![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/7230b3bc-e0c5-4d9f-b117-8827bd64ef37)<br />
+
+Once you have done all these steps, all you have to do is run the main.py flle and after that a "config.ini" file will pop up just like this.<br />
+![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/1295c47c-7777-4d58-ac8a-9efd577d849e)<br />
+
+In 'config.ini' You can adjust the data retrieval from the website of the university or import data, which you scrape, into the GQL endpoint, depending on how you want
+
+
+
+
+
+
