@@ -7,20 +7,8 @@ uvicorn[standard]
 gunicorn
 
 asyncpg
-
+aiohttp
+aiodataloader
+requests
 sqlalchemy
 sqlalchemy_utils
-
-pydantic
-starlette
-strawberry-graphql
-click
-aiodataloader
-aiohttp
-requests
-pyjwt[crypto]
-
-prometheus-client
-prometheus_fastapi_instrumentator
-
-https://github.com/hrbolek/uoishelpers/archive/refs/heads/main.zip
