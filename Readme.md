@@ -34,13 +34,7 @@ Pokud máte u entit k dispozici atributy navíc, navrhněte rozšíření GQL en
 
 # JSON requirements
 
-Before running the program please create these following files!
-
-1. "systemdata.json" - This file will contain students information. You can keep it blank.
-
-## In "untils" folder:
-
-2. "a_credentials.json" with this format:
+## Before you run main.py please create "credentials.json" with this format:
 
 ```json
 {
@@ -48,10 +42,6 @@ Before running the program please create these following files!
   "password": "your password"
 }
 ```
-
-3. "b_groups_data.json" - This file will contain groups information. You can keep it blank.
-
-4. "c_students_data.json" - This file will contain students information. You can keep it blank.
 
 ### Requirements
 

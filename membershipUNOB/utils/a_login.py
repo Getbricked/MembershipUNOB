@@ -17,7 +17,7 @@ def login(driver):
     print("Logging in...\n")
 
     # Read username and password from JSON file
-    with open("utils/a_credentials.json", "r") as file:
+    with open("credentials.json", "r") as file:
         credentials = json.load(file)
         username = credentials["username"]
         password = credentials["password"]

@@ -1,5 +1,3 @@
-# setup.py
-
 from setuptools import setup, find_packages
 
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -7,8 +5,12 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="membershipUNOB",
-    version="0.1",
+    version="1.0.1",
     packages=find_packages(),
+    package_data={
+        "membershipUNOB.utils": ["*.json", "*.html"],
+        "membershipUNOB.gql": ["*.gql"],
+    },
     include_package_data=True,
     install_requires=[
         "beautifulsoup4",
@@ -24,7 +26,7 @@ setup(
         "uvicorn",
         "gunicorn",
     ],
-    author="Minh Quang Bui",
+    author="Minh Quang Bui - Quang Tai Do",
     author_email="minhquang.bui@unob.cz",
     description="Membership management for UNOB",
     long_description=long_description,

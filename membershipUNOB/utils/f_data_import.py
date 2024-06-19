@@ -1,7 +1,8 @@
 import json
 import asyncio
 import aiohttp
-from utils._config import config_check_import, config_data
+from ._config import config_check_import, config_data
+import os
 
 config = config_data
 
@@ -108,14 +109,21 @@ async def import_membership(data, db_writer, gql_func):
 
 
 def data_import():
-    with open("systemdata.json", "r", encoding="utf-8") as file:
+    json_file = "systemdata.json"
+
+    with open(json_file, "r", encoding="utf-8") as file:
         data = json.load(file)
+
+    script_dir = os.path.dirname(__file__)
+    base_dir = os.path.abspath(os.path.join(script_dir, "..", ".."))
+    user_gql = os.path.join(base_dir, "membershipUNOB", "gql", "user_add.gql")
+    group_gql = os.path.join(base_dir, "membershipUNOB", "gql", "group_add.gql")
+    membership_gql = os.path.join(
+        base_dir, "membershipUNOB", "gql", "membership_add.gql"
+    )
 
     loop = asyncio.get_event_loop()
     db_writer = DBWriter()
-    user_gql = "gql/user_add.gql"
-    group_gql = "gql/group_add.gql"
-    membership_gql = "gql/membership_add.gql"
 
     async def import_data():
         await import_user(config, data, db_writer, user_gql)
