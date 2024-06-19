@@ -3,8 +3,8 @@ import time
 import uuid
 import os
 
-from utils.d_create_externalids import create_externalids
-from utils._config import config_check_web, config_web
+from .d_create_externalids import create_externalids
+from ._config import config_check_web, config_web
 
 
 def open_file(path, data_name):
@@ -24,9 +24,26 @@ def open_file(path, data_name):
 @config_check_web(config_web["extract_data"])
 def extract_data():
 
+    module_dir = os.path.dirname(__file__)
+    student_path = os.path.join(module_dir, "c_students_data.json")
+    group_path = os.path.join(module_dir, "b_groups_data.json")
     # Load the data from the JSON files
-    students = open_file("utils/c_students_data.json", "users")
-    groups = open_file("utils/b_groups_data.json", "groups")
+    students = open_file(student_path, "users")
+    groups = open_file(group_path, "groups")
+
+    # Crewate a JSON file if it doesn't exist
+    json_file = "systemdata.json"
+    if os.path.exists(json_file):
+        # If the file exists, load data from it
+        with open(json_file, "r", encoding="utf-8") as file:
+            data = json.load(file)
+    else:
+        # If the file doesn't exist, initialize an empty data structure
+        data = {}
+
+        # Optionally, you can write the empty data to the file
+        with open(json_file, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=4)
 
     # Create a dictionary of old memberships base on group_id and user_id
     old_memberships = open_file("systemdata.json", "memberships")
@@ -117,6 +134,5 @@ def extract_data():
         "users": users,
         "memberships": filtered_memberships,
     }
-
     with open("systemdata.json", "w", encoding="utf-8") as outfile:
         json.dump(extracted_data, outfile, ensure_ascii=False, indent=4)

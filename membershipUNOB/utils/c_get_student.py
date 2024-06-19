@@ -15,8 +15,8 @@ import json
 import time
 import uuid
 import os
-from utils.a_login import login
-from utils._config import config_check_web, config_web
+from .a_login import login
+from ._config import config_check_web, config_web
 
 
 # Getting student data from the URL
@@ -180,15 +180,13 @@ def get_student():
     wait = WebDriverWait(driver, 10)
     print("WebDriver has been started.")
 
-    # Extract groups data
-    output_json_path = "utils/b_groups_data.json"
-
     # Login to the website
     login(driver)
 
     # Load group page
-    from utils.extract_data import open_file
-
+    from .extract_data import open_file
+    script_dir = os.path.dirname(__file__)
+    output_json_path = os.path.join(script_dir, 'b_groups_data.json')
     urls_data = open_file(output_json_path, "groups")
 
     print(len(urls_data), " groups have been founded.\n")
@@ -201,12 +199,10 @@ def get_student():
     print("-----------------------------------------------------------")
     print("Data comparison...\n")
 
-    if os.path.getsize("utils/c_students_data.json") > 0:
-        with open("utils/c_students_data.json", "r", encoding="utf-8") as file:
-            old_students = json.load(file)["users"]
-    else:
-        old_students = []
-
+    module_dir = os.path.dirname(__file__)
+    student_path = os.path.join(module_dir, "c_students_data.json")
+    
+    old_students=open_file(student_path, "users")
     print("All students have been loaded.\n")
     time.sleep(0.5)
     print("Removing unnecessary data...\n")
@@ -219,12 +215,10 @@ def get_student():
 
     print("Saving data to data.json file...\n")
 
-    with open("utils/c_students_data.json", "w", encoding="utf-8") as outfile:
+    with open(student_path, "w", encoding="utf-8") as outfile:
         json.dump(students_list, outfile, ensure_ascii=False, indent=4)
 
     time.sleep(0.5)
-
-    print("Data has been saved to data.json file.\n")
 
     driver.quit()
     print("WebDriver has been closed.")

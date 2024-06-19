@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import uuid
 import os
-from utils._config import config_check_web, config_web
+from ._config import config_check_web, config_web
 
 
 @config_check_web(config_web["get_data"])
@@ -20,7 +20,7 @@ def get_group(html_file_path, output_json_path):
 
     # Initialize a list to store data
     data = []
-    from utils.extract_data import open_file
+    from .extract_data import open_file
 
     old_groups = open_file(output_json_path, "groups")
 

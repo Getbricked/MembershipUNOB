@@ -6,7 +6,7 @@ import os
 
 def create_externalids(students, memberships, externalidtypes):
     externalids = []
-    from utils.extract_data import open_file
+    from .extract_data import open_file
 
     externalids_data = open_file("systemdata.json", "externalids")
 

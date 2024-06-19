@@ -1,13 +1,15 @@
 # main.py
-from utils.b_get_group import get_group
-from utils.c_get_student import get_student
-from utils.extract_data import extract_data
-from utils.f_data_import import data_import
+from .utils.b_get_group import get_group
+from .utils.c_get_student import get_student
+from .utils.extract_data import extract_data
+from .utils.f_data_import import data_import
+import os
 
 
 def webscraping():
-    html_file_path = "utils/b_list_groups.html"
-    output_json_path = "utils/b_groups_data.json"
+    script_dir = os.path.dirname(__file__)
+    html_file_path = os.path.join(script_dir, "utils", "b_list_groups.html")
+    output_json_path = os.path.join(script_dir, "utils", "b_groups_data.json")
 
     get_group(html_file_path, output_json_path)
 
