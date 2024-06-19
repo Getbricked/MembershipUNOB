@@ -1,6 +1,10 @@
 from setuptools import setup, find_packages
+import os
 
-with open("Readme.md", "r", encoding="utf-8") as fh:
+script_dir = os.path.dirname(__file__)
+readme = os.path.join(script_dir, "Readme.md")
+
+with open(readme, "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
