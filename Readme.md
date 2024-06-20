@@ -59,19 +59,17 @@ We already published our project as a Pypi package so in file 'requirement.txt' 
 Move on to the next step, please create main.py file and in this file please import "membershipUNOB" just like code below:<br />
 ![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/7230b3bc-e0c5-4d9f-b117-8827bd64ef37)<br />
 
-#### Config.ini explanation: true/false - keep in mind that default value for all config are true
+Once you have done all these steps, all you have to do is run the main.py flle and after that a "config.ini" file will pop up just like this.<br />
+![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/1295c47c-7777-4d58-ac8a-9efd577d849e)<br />
+
+In 'config.ini' You can adjust the data retrieval from the website of the university or import data, which you scrape, into the GQL endpoint, depending on how you want
+### Config.ini explanation: true/false - keep in mind that default value for all config are true
 1. get_data : execute webscraping to update the current data for changes
 2. extract_data : from users and groups data extract them to get memberships and externalids data
 
 3. users : execute users import to GQL endpoint
 4. groups : execute groups import to GQL endpoint
 5. memberships : execute memberships import to GQL endpoint  
-
-Once you have done all these steps, all you have to do is run the main.py flle and after that a "config.ini" file will pop up just like this.<br />
-![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/1295c47c-7777-4d58-ac8a-9efd577d849e)<br />
-
-In 'config.ini' You can adjust the data retrieval from the website of the university or import data, which you scrape, into the GQL endpoint, depending on how you want
-
 
 
 
