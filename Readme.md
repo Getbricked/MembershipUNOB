@@ -46,16 +46,28 @@ Pokud máte u entit k dispozici atributy navíc, navrhněte rozšíření GQL en
 ## Initialization process:
 
 ### You can directly install the package using this command:
+
+#### For version 2.0:
+
 ```bash
 pip install membershipUNOB
 ```
-or
+
+#### For version 1.0.3:
+
 ```bash
 pip install membershipUNOB==1.0.3
 ```
-Source : https://pypi.org/project/membershipUNOB/
+
+#### Note:
+
+- Version 2.0 is fresh it doesn't has any imported json data.
+- Version 1.0.3 got students and groups data.
+
+#### Source : https://pypi.org/project/membershipUNOB/
 
 ### Using it for your project:
+
 We already published our project as a Pypi package so in file 'requirement.txt' you just need to add "membershipUNOB", it will automatically install all the libraries and dependencies.<br />
 Move on to the next step, please create main.py file and in this file please import "membershipUNOB" just like code below:<br />
 ![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/7230b3bc-e0c5-4d9f-b117-8827bd64ef37)<br />
@@ -64,15 +76,12 @@ Once you have done all these steps, all you have to do is run the main.py flle a
 ![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/1295c47c-7777-4d58-ac8a-9efd577d849e)<br />
 
 In 'config.ini' You can adjust the data retrieval from the website of the university or import data, which you scrape, into the GQL endpoint, depending on how you want
+
 ### Config.ini explanation: true/false - keep in mind that default value for all config are true
+
 1. get_data : execute webscraping to update the current data for changes
 2. extract_data : from users and groups data extract them to get memberships and externalids data
 
 3. users : execute users import to GQL endpoint
 4. groups : execute groups import to GQL endpoint
-5. memberships : execute memberships import to GQL endpoint  
-
-
-
-
-
+5. memberships : execute memberships import to GQL endpoint
