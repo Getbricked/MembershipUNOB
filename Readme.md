@@ -53,6 +53,7 @@ or
 ```bash
 pip install membershipUNOB==1.0.3
 ```
+Source : https://pypi.org/project/membershipUNOB/
 
 ### Using it for your project:
 We already published our project as a Pypi package so in file 'requirement.txt' you just need to add "membershipUNOB", it will automatically install all the libraries and dependencies.<br />
@@ -67,6 +68,7 @@ In 'config.ini' You can adjust the data retrieval from the website of the univer
 1. get_data : execute webscraping to update the current data for changes
 2. extract_data : from users and groups data extract them to get memberships and externalids data
 
+(require uois gql)
 3. users : execute users import to GQL endpoint
 4. groups : execute groups import to GQL endpoint
 5. memberships : execute memberships import to GQL endpoint  
