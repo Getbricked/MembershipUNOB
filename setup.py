@@ -8,7 +8,7 @@ with open(readme, "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="membershipUNOB-beta",
+    name="membershipUNOB",
     version="0.0.2",
     packages=find_packages(),
     package_data={
