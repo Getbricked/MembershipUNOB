@@ -32,9 +32,9 @@ U entit naplňte všechny atributy, pokud ve zdroji některé atributy nejsou, d
 
 Pokud máte u entit k dispozici atributy navíc, navrhněte rozšíření GQL endpointu.<br />
 
-# JSON requirements
+## JSON requirements
 
-## Before you run main.py please create "credentials.json" with this format:
+### Before you run main.py please create "credentials.json" with this format:
 
 ```json
 {
@@ -42,16 +42,6 @@ Pokud máte u entit k dispozici atributy navíc, navrhněte rozšíření GQL en
   "password": "your password"
 }
 ```
-
-### Requirements
-
-Python 3.10.10 is required to run this program. Additional libraries are listed in "requirements.txt" you can install them with this command:
-
-```bash
-pip install -r requirements.txt
-```
-
-Or you can create .venv with "requirements.txt".
 
 ## Initialization process:
 
