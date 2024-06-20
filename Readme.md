@@ -61,8 +61,8 @@ pip install membershipUNOB==1.0.3
 
 #### Note:
 
-- Version 2.0 is fresh it doesn't has any imported json data.
-- Version 1.0.3 got students and groups data.
+- Version 2.0 doesn't have any imported json data (fresh).
+- Version 1.0.3 has students and groups data imported.
 
 #### Source : https://pypi.org/project/membershipUNOB/
 
