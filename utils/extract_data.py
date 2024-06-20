@@ -7,6 +7,30 @@ from utils.d_create_externalids import create_externalids
 from utils._config import config_check_web, config_web
 
 
+def ensure_file_exists(func):
+    def wrapper(*args, **kwargs):
+        # Extract the `path` and `data_name` arguments from the function's arguments
+        path = kwargs.get("path") if "path" in kwargs else args[0]
+        # data_name = kwargs.get("data_name") if "data_name" in kwargs else args[1]
+
+        if os.path.exists(path):
+            # If the file exists, proceed with the original function
+            return func(*args, **kwargs)
+        else:
+            # If the file doesn't exist, initialize an empty data structure
+            data = {}
+
+            # Write the empty data to the file
+            with open(path, "w", encoding="utf-8") as file:
+                json.dump(data, file, indent=4)
+
+            # Now call the original function
+            return func(*args, **kwargs)
+
+    return wrapper
+
+
+@ensure_file_exists
 def open_file(path, data_name):
     if os.path.getsize(path) > 0:
         with open(path, "r", encoding="utf-8") as data_file:
