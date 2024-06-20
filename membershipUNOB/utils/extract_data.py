@@ -7,6 +7,30 @@ from .d_create_externalids import create_externalids
 from ._config import config_check_web, config_web
 
 
+def ensure_file_exists(func):
+    def wrapper(*args, **kwargs):
+        # Extract the `path` and `data_name` arguments from the function's arguments
+        path = kwargs.get("path") if "path" in kwargs else args[0]
+        # data_name = kwargs.get("data_name") if "data_name" in kwargs else args[1]
+
+        if os.path.exists(path):
+            # If the file exists, proceed with the original function
+            return func(*args, **kwargs)
+        else:
+            # If the file doesn't exist, initialize an empty data structure
+            data = {}
+
+            # Write the empty data to the file
+            with open(path, "w", encoding="utf-8") as file:
+                json.dump(data, file, indent=4)
+
+            # Now call the original function
+            return func(*args, **kwargs)
+
+    return wrapper
+
+
+@ensure_file_exists
 def open_file(path, data_name):
     if os.path.getsize(path) > 0:
         with open(path, "r", encoding="utf-8") as data_file:
@@ -30,20 +54,6 @@ def extract_data():
     # Load the data from the JSON files
     students = open_file(student_path, "users")
     groups = open_file(group_path, "groups")
-
-    # Crewate a JSON file if it doesn't exist
-    json_file = "systemdata.json"
-    if os.path.exists(json_file):
-        # If the file exists, load data from it
-        with open(json_file, "r", encoding="utf-8") as file:
-            data = json.load(file)
-    else:
-        # If the file doesn't exist, initialize an empty data structure
-        data = {}
-
-        # Optionally, you can write the empty data to the file
-        with open(json_file, "w", encoding="utf-8") as file:
-            json.dump(data, file, indent=4)
 
     # Create a dictionary of old memberships base on group_id and user_id
     old_memberships = open_file("systemdata.json", "memberships")
