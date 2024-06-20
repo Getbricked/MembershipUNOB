@@ -53,8 +53,18 @@ pip install -r requirements.txt
 
 Or you can create .venv with "requirements.txt".
 
-### Initialization process
+### Initialization process:
 
+## You can directly install the package using this command:
+```bash
+pip install membershipUNOB
+```
+or
+```bash
+pip install membershipUNOB==1.0.3
+```
+
+## Using it for your project:
 We already published our project as a Pypi package so in file 'requirement.txt' you just need to add "membershipUNOB", it will automatically install all the libraries and dependencies.<br />
 Move on to the next step, please create main.py file and in this file please import "membershipUNOB" just like code below:<br />
 ![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/7230b3bc-e0c5-4d9f-b117-8827bd64ef37)<br />
