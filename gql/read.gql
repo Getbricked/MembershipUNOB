@@ -1,0 +1,1 @@
+query ($id: UUID!) { result: membershipById(id: $id) { __typename, id, lastchange, valid}}

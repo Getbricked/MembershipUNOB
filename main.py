@@ -3,6 +3,8 @@ from utils.b_get_group import get_group
 from utils.c_get_student import get_student
 from utils.extract_data import extract_data
 from utils.f_data_import import data_import
+from utils.f_data_import import db_writer_async
+import asyncio
 
 
 def webscraping():
@@ -23,3 +25,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    asyncio.run(db_writer_async())
