@@ -2,25 +2,9 @@ selenium
 bs4
 webdriver_manager
 
-fastapi[all]
-uvicorn[standard]
-gunicorn
-
 asyncpg
-
-sqlalchemy
-sqlalchemy_utils
-
-pydantic
-starlette
-strawberry-graphql
-click
+async-lru
+jupyter
 aiodataloader
 aiohttp
 requests
-pyjwt[crypto]
-
-prometheus-client
-prometheus_fastapi_instrumentator
-
-https://github.com/hrbolek/uoishelpers/archive/refs/heads/main.zip
