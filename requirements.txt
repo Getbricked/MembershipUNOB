@@ -2,13 +2,9 @@ selenium
 bs4
 webdriver_manager
 
-fastapi[all]
-uvicorn[standard]
-gunicorn
-
 asyncpg
 aiohttp
 aiodataloader
 requests
-sqlalchemy
-sqlalchemy_utils
+
+async_lru
