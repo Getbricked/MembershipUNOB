@@ -9,10 +9,10 @@ with open(readme, "r", encoding="utf-8") as fh:
 
 setup(
     name="membershipUNOB",
-    version="2.0.0",
+    version="2.0.1",  # Can be changed later
     packages=find_packages(),
     package_data={
-        "membershipUNOB.utils": ["*.json", "*.html"],
+        "membershipUNOB.utils": ["*.html"],
         "membershipUNOB.gql": ["*.gql"],
     },
     include_package_data=True,
@@ -21,14 +21,10 @@ setup(
         "requests",
         "selenium",
         "webdriver_manager",
-        "fastapi",
         "aiohttp",
         "asyncpg",
         "aiodataloader",
-        "sqlalchemy",
-        "sqlalchemy_utils",
-        "uvicorn",
-        "gunicorn",
+        "async-lru",
     ],
     author="Minh Quang Bui - Quang Tai Do",
     author_email="minhquang.bui@unob.cz",
