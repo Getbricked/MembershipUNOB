@@ -1,85 +1,97 @@
 # Membership_UNOB_ws
 
-Repository for school web scraping project of unob IS
+Repository pro školní projekt webového scrappingu UNOB IS.
 
-## Task
+---
 
-### 3. Naplnění dat o členství
+## Úkol
 
-Využijte zdroje dat pro získání informací o členství osob ve skupinách (GQL_UG). Vytvořte JSON datovou strukturu (kompatibilní se systemdata.json). Vytvořte program, který importuje data do GQL endpointů (s využitím mutací). Zabezpečte existenci propojení (ExternalIDs) se zdrojovým IS.<br />
+### 3. Vyplnění údajů o členství
 
-### Společné podmínky
+Využijte zdroje dat k získání informací o členství jednotlivců ve skupinách (GQL_UG). Vytvořte datovou strukturu JSON (kompatibilní se `systemdata.json`). Vypracujte program pro import těchto dat do GQL endpointů (pomocí mutací). Zajistěte existenci propojení (ExternalIDs) se zdrojovým IS.
 
-Testujte **duplicitu** dat, jednak přes externalid a jednak, kde je to možné, přes jména či jiné identifikátory.<br />
+### Společné požadavky
 
-Pro práci s html daty (získání html stránek) použijte knihovnu **selenium** (headless mode).<br />
+- Testujte na **duplicitní data**, a to jak pomocí `externalid`, tak, kde je to možné, podle jmen nebo jiných identifikátorů.
+- Použijte knihovnu **Selenium** (v režimu headless) pro práci s HTML daty (stahování HTML stránek).
+- Vytvořte a publikujte **PyPI balíček**. GitHub repozitář (zdroj balíčku) by měl obsahovat Jupyter notebook (`.ipynb`) demonstrující jeho použití (import balíčku a spuštění hlavního kódu). Balíček by měl umožnit import funkce `gather` z kořenového balíčku.
 
-Vytvořte a publikujte **pypi package**. Součastí github respository (source for package) je i ipynb notebook s demonstrací využití (import package, run main code). Nechť je možné importovat funkci gather z root balíčku (pypi package).<br />
+### Hlavní funkce: `gather()`
 
-Hlavní funkce **gather()** pracuje s následujícími parametry:
+Funkce `gather()` by měla pracovat s následujícími parametry:
 
-    - username: Přihlašovací jméno
+- `username`: Přihlašovací jméno.
+- `password`: Přihlašovací heslo.
+- `config`: Slovník s cestami pro uživatele, skupiny, členství atd. (výchozí hodnota je poskytnuta).
+- `output`: Možnosti výstupu (`systemdata.json`, `writetogql`).
+- `extras`: Další parametry (např. `token`).
 
-    - password: Přihlašovací heslo
+Vyplňte všechny atributy pro entity. Pokud některé atributy ve zdroji chybí, dohodněte se na výchozích hodnotách. Pokud jsou k dispozici další atributy, navrhněte rozšíření GQL endpointu.
 
-    - config: {paths: {users: “”, groups: “”, memberships: “”. … }} (defaultni hodnota)
+---
 
-    - output (systemdata.json, writetogql)
+## Požadavky na JSON
 
-    - **extras (token!)
+### Před spuštěním `main.py`
 
-U entit naplňte všechny atributy, pokud ve zdroji některé atributy nejsou, domluvte se na jejich dummy values.<br />
-
-Pokud máte u entit k dispozici atributy navíc, navrhněte rozšíření GQL endpointu.<br />
-
-## JSON requirements
-
-### Before you run main.py please create "credentials.json" with this format:
+Vytvořte soubor `credentials.json` s následujícím formátem:
 
 ```json
 {
-  "username": "your unob email",
-  "password": "your password"
+  "username": "vaše unob email",
+  "password": "vaše heslo"
 }
 ```
 
-## Initialization process:
+---
 
-### You can directly install the package using this command:
+## Proces inicializace
 
+### Instalace balíčku
 
+Balíček můžete nainstalovat přímo pomocí následujícího příkazu:
 
-#### For version 2.0.1:
+#### Pro verzi 2.0.1:
 
 ```bash
 pip install membershipUNOB
 ```
 
-### Source : https://pypi.org/project/membershipUNOB/
+### Zdroj
 
+[PyPI: membershipUNOB](https://pypi.org/project/membershipUNOB/)
 
-### Using it for your project:
+---
 
-We already published our project as a Pypi package so in file 'requirement.txt' you just need to add "membershipUNOB", it will automatically install all the libraries and dependencies.<br />
+### Použití balíčku ve vašem projektu
 
-Move on to the next step, please create main.py file and in this file please import "membershipUNOB" just like code below:<br />
-![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/7230b3bc-e0c5-4d9f-b117-8827bd64ef37)<br />
+Projekt je publikován jako PyPI balíček. Pro jeho použití přidejte `membershipUNOB` do vašeho souboru `requirements.txt`. Tím se automaticky nainstalují všechny potřebné knihovny a závislosti.
 
-Once you have done all these steps, all you have to do is run the main.py flle and after that a "config.ini" file will pop up just like this.<br />
-![image](https://github.com/Getbricked/MembershipUNOB/assets/115787629/1295c47c-7777-4d58-ac8a-9efd577d849e)<br />
+Poté vytvořte soubor `main.py` a importujte `membershipUNOB` následujícím způsobem:
 
-In 'config.ini' You can adjust the data retrieval from the website of the university or import data, which you scrape, into the GQL endpoint, depending on how you want
+```python
+from membershipUNOB import gather
+```
 
-### Config.ini explanation: true/false - keep in mind that default value for all config are true
+Po dokončení těchto kroků spusťte soubor `main.py`. Vygeneruje se soubor `config.ini`, podobný příkladu níže:
 
+![Config Example](https://github.com/Getbricked/MembershipUNOB/assets/115787629/1295c47c-7777-4d58-ac8a-9efd577d849e)
 
-#### Webscraping and extract data
+V souboru `config.ini` můžete upravit nastavení pro získávání dat z univerzitního webu nebo import dat do GQL endpointu podle vašich požadavků.
 
-1. get_data : execute webscraping to update the current data for changes
-2. extract_data : from users and groups data extract them to get memberships and externalids data
+---
 
-#### Data import
+### Vysvětlení `config.ini`
 
-3. users : execute users import to GQL endpoint
-4. groups : execute groups import to GQL endpoint
-5. memberships : execute memberships import to GQL endpoint
+Výchozí hodnota všech konfigurací je `true`. Níže jsou uvedeny dostupné možnosti:
+
+#### Web scraping a extrakce dat
+
+1. `get_data`: Provádí web scraping pro aktualizaci aktuálních dat při změnách.
+2. `extract_data`: Extrahuje data o členství a externích ID uživatelů a skupin.
+
+#### Import dat
+
+3. `users`: Importuje data uživatelů do GQL endpointu.
+4. `groups`: Importuje data skupin do GQL endpointu.
+5. `memberships`: Importuje data o členství do GQL endpointu.
