@@ -16,9 +16,9 @@ Využijte zdroje dat k získání informací o členství jednotlivců ve skupin
 - Použijte knihovnu **Selenium** (v režimu headless) pro práci s HTML daty (stahování HTML stránek).
 - Vytvořte a publikujte **PyPI balíček**. GitHub repozitář (zdroj balíčku) by měl obsahovat Jupyter notebook (`.ipynb`) demonstrující jeho použití (import balíčku a spuštění hlavního kódu). Balíček by měl umožnit import funkce `gather` z kořenového balíčku.
 
-### Hlavní funkce: `gather()`
+### Hlavní funkce: `main()`
 
-Funkce `gather()` by měla pracovat s následujícími parametry:
+Funkce `main()` by měla pracovat s následujícími parametry:
 
 - `username`: Přihlašovací jméno.
 - `password`: Přihlašovací heslo.
@@ -70,7 +70,7 @@ Projekt je publikován jako PyPI balíček. Pro jeho použití přidejte `member
 Poté vytvořte soubor `main.py` a importujte `membershipUNOB` následujícím způsobem:
 
 ```python
-from membershipUNOB import gather
+from membershipUNOB import main
 ```
 
 Po dokončení těchto kroků spusťte soubor `main.py`. Vygeneruje se soubor `config.ini`, podobný příkladu níže:
